@@ -19,6 +19,7 @@ const CompanyType = new GraphQLObjectType({
     name: { type: GraphQLString },
     description: { type: GraphQLString },
     users: {
+      // eslint-disable-next-line no-use-before-define
       type: new GraphQLList(UserType),
       resolve(parentValue) {
         return axios.get(`http://localhost:3000/companies/${parentValue.id}/users`)
@@ -89,7 +90,21 @@ const mutation = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(_, { id }) {
-        return axios.delete(`http://localhost:3000/users/${id}`).then(respData);
+        return axios.delete(`http://localhost:3000/users/${id}`)
+          .then(respData);
+      }
+    },
+    editUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: GraphQLInt },
+        firstName: { type: GraphQLString },
+        companyId: { type: GraphQLString }
+      },
+      resolve(_, args) {
+        return axios.patch(`http://localhost:3000/users/${args.id}`, args)
+          .then(respData);
       }
     }
   }
