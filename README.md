@@ -1,2 +1,2 @@
 # graphQL-course
-Udemy course by Stephen Girder 
+Udemy course by Stephen Grider
